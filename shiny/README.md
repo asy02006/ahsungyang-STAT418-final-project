@@ -24,7 +24,8 @@ For weekly or monthly frequency, the sentiment score is the average score of the
 ### 3. R / Sentimentr 
 - sentimentr attempts to take into account valence shifters (i.e., negators, amplifiers (intensifiers), de-amplifiers (downtoners), and adversative conjunctions) while maintaining speed.
 - An augmented dictionary search
-- For more information, please refer to `https://cran.r-project.org/web/packages/sentimentr/readme/README.html`
+- For more information, please refer to 
+`https://cran.r-project.org/web/packages/sentimentr/readme/README.html`
 - For sentimentr package, the negative and positive terms detected by the analyzer can be extracted.
 - Top 10 most frequently mentioned negative and positive temrs will be shown in a separate table
 
