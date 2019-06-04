@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ABOUT</title>
+  </head>
+  <body>
+    <center>
+    <h2>About this app</h2>
+    </center>
+
+    <p>This app is to show the sentiment scores of New York Times articles on Apple Inc. The articles are from January 1, 2014 to April 30, 2019. We used three different existing sentiment analysis packages to plot the historical sentiment scores of the articles. </p>
+    <p>You can choose the sentiment analysis method (PatternAnalyzer, Naive Bayes Analyzer, Sentimentr), type of text data (abstract, headline, snippet, paragraph), and frequency of data (daily, weekly, monthly) to get a plot of historical sentiment scores.</p>
+    <p>For weekly or monthly frequency, the sentiment score is the average score of the corresponding period.
+    
+    <h2>Description of Analzyers</h2>
+    <h3>(1) Python / Textblob / PatternAnalyzer</h3>
+    <p> Sentiment analyzer that uses the same implementation as the pattern library (PatternAnalyzer).</p>
+    <p> The polarity score is a float within the range [-1.0, 1.0].</p>
+    <h3>(2) Python / Textblob / NaiveBayesAnalyzer</h3>
+    <p> Sentiment analyzer that uses Naive Bayes analyzer which is trained on a movie review corpus.</p>
+    <p> A classifier based on the Naive Bayes algorithm, as implemented in NLTK.</p>
+    <p> Returns the label probability distribution for classifying a string of text.</p>
+    <p> The polarity score is a float within the range [0, 1.0].</p>
+    <h3>(3) R / Sentimentr </h3>
+    <p> sentimentr attempts to take into account valence shifters (i.e., negators, amplifiers (intensifiers), de-amplifiers (downtoners), and adversative conjunctions) while maintaining speed.</p>
+    <p> For more information, please refer to https://cran.r-project.org/web/packages/sentimentr/readme/README.html </p>
+    <p> For sentimentr package, the negative and positive terms detected by the analyzer can be extracted.</p>
+    <p> Top 10 most frequently mentioned negative and positive temrs will be shown.</p>
+    
+    <br>
+    <h2>Creator</h2>
+    <p>Ah Sung Yang</p>
+  </body>
+</html>
