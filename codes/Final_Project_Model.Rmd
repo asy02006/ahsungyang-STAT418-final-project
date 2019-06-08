@@ -1,0 +1,116 @@
+---
+title: "STAT418_Final_Project"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+library(dplyr)
+library(lubridate)
+library(sentimentr)
+library(tidytext)
+library(xgboost)
+```
+ 
+## 1. Download the data
+
+- Add sentiment scores to the data set using the sentimentr package
+- Compute correlation with stock price returns
+
+```{r}
+
+## ---------------------------------------------------
+## Download data
+
+news = read.csv('news_data.csv') %>% as.data.frame()
+sp = read.csv('share_price_data.csv') %>% as.data.frame()
+
+## ---------------------------------------------------
+## Add R Setiment Analysis Results
+
+abstract_polarity_r1 = sentiment_by(get_sentences(as.character(news$abstract)))$ave_sentiment
+headline_polarity_r1 = sentiment_by(get_sentences(as.character(news$headline)))$ave_sentiment
+snippet_polarity_r1 = sentiment_by(get_sentences(as.character(news$snippet)))$ave_sentiment
+paragraph_polarity_r1 = sentiment_by(get_sentences(as.character(news$paragraph)))$ave_sentiment
+
+news = cbind(news, abstract_polarity_r1, headline_polarity_r1, snippet_polarity_r1, paragraph_polarity_r1)
+#head(news)
+news_sent = news[,c(2, 15:31)]
+
+news_group = news_sent %>% group_by(date) %>% 
+  summarize(no_articles = n(), word_count = mean(word_count), abstract_polarity = mean(abstract_polarity), 
+            headline_polarity = mean(headline_polarity), snippet_polarity = mean(snippet_polarity), 
+            paragraph_polarity = mean(paragraph_polarity), abstract_polarity_nba = mean(abstract_polarity_nba),
+            headline_polarity_nba = mean(headline_polarity_nba), snippet_polarity_nba = mean(snippet_polarity_nba),
+            paragraph_polarity_nba = mean(paragraph_polarity_nba), abstract_polarity_r1 = mean(abstract_polarity_r1),
+            headline_polarity_r1 = mean(headline_polarity_r1), snippet_polarity_r1 = mean(snippet_polarity_r1),
+            paragraph_polarity_r1 = mean(paragraph_polarity_r1)) %>% as.data.frame()
+
+## ---------------------------------------------------
+## Convert the Share Prices to Log Difference
+
+sp_log = cbind(date = as.character(sp$Date[-1]), logdiff = diff(log(sp$Adj.Close))) %>% as.data.frame()
+sp_log = cbind(sp_log, binary = as.numeric(as.numeric(as.character(sp_log$logdiff)) > 0)) 
+
+## ---------------------------------------------------
+## Join two data tables
+
+sp_log$date = as.character(sp_log$date)
+news_group$date = as.character(news_group$date)
+news_sp = inner_join(sp_log, news_group, by = 'date')
+news_sp$logdiff = as.numeric(as.character(news_sp$logdiff))
+
+#head(news_sp)
+
+## ---------------------------------------------------
+## Get correlations
+
+cor(news_sp$logdiff, news_sp$abstract_polarity)
+cor(news_sp$logdiff, news_sp$headline_polarity)
+cor(news_sp$logdiff, news_sp$snippet_polarity)
+cor(news_sp$logdiff, news_sp$paragraph_polarity)
+cor(news_sp$logdiff, news_sp$abstract_polarity_nba)
+cor(news_sp$logdiff, news_sp$headline_polarity_nba)
+cor(news_sp$logdiff, news_sp$snippet_polarity_nba)
+cor(news_sp$logdiff, news_sp$paragraph_polarity_nba)
+cor(news_sp$logdiff, news_sp$abstract_polarity_r1)
+cor(news_sp$logdiff, news_sp$headline_polarity_r1)
+cor(news_sp$logdiff, news_sp$snippet_polarity_r1)
+cor(news_sp$logdiff, news_sp$paragraph_polarity_r1)
+
+## ---------------------------------------------------
+sent_terms = extract_sentiment_terms(get_sentences(as.character(news$paragraph)))
+table = sort(table(unlist(sent_terms$negative)), decreasing = TRUE)[1:10] %>% as.data.frame()
+
+
+```
+
+## 2. Models
+
+- Used two models: (1) Logistics Regression (2) xgBoost
+- Used first 700 data points as a training set
+- Used the remaining as a test set
+
+```{r}
+## Logistics Regression on Binary Stock Price and Binary Response
+
+m1 = glm(news_sp$logdiff ~ news_sp$abstract_polarity_nba + news_sp$snippet_polarity_nba)
+summary(m1)
+
+## Use xgboost to fit the trees 
+## Using sentiment scores to predict direction of share price returns
+
+test1 <- xgboost(data = as.matrix(news_sp[c(1:700), -c(1,2,3,4,5)]), label = news_sp[c(1:700), c(3)], max.depth = 3, nthread = 10, nrounds = 10, objective = "binary:logistic")
+
+pred <- predict(test1, as.matrix(news_sp[c(701:785), -c(1,2,3,4,5)]))
+prediction = as.numeric(pred > 0.5)
+sum(prediction == news_sp[c(701:785), c(3)])
+
+```
+
+
+
