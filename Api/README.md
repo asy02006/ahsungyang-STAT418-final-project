@@ -1,8 +1,12 @@
 # Flask-Api
 
-This is a flask API that returns prediction for direction of share price return (pos/neg) of Apple Inc. stock using a Naive Bayes Classifier. The model is built based on NY Times Articles (abstract) on Apple Inc. and corresponding directions of daily share price returns from Jan. 1, 2014 to Apr. 30, 2019.
+*(Please note that due to the memory allocation issue, it was not able to be hosted on Amazon EC2)*
 
-**1. Open a terminal, change directory to the "docker" folder, and run:**
+This is a flask API that returns **prediction for the direction of daily share price return (pos/neg) of Apple Inc. stock** given the input of an article abstract. The Naive Bayes Classifier was trained on the New York Times Articles (abstract) on Apple Inc. and the corresponding directions of share price returns from Jan. 1, 2014 to Apr. 30, 2019.  
+
+**1. Please download the directory to the local or virtual machine.**
+
+**2. Open a terminal, change directory to the "docker" folder, and run:**
 
 `docker-compose up`
 
@@ -20,7 +24,7 @@ flask_1  |  * Restarting with stat
 flask_1  |  * Debugger is active!  
 flask_1  |  * Debugger PIN: [Debugger PIN]  
 
-**2. Open a new terminal and run the following command to confirm that the server is up**
+**3. Open a new terminal and run the following command to confirm that the server is up**
 
 `curl http://localhost:5000/`
 
@@ -35,7 +39,7 @@ server is up - nice job!
 If it is successfully run, you will get the following output: 
 
 {  
-"predict response": "neg"
+"predict response": "neg" \n
 }  
 
 **4. Both of the curl commands can be found in the file `curl_test.sh`.** 

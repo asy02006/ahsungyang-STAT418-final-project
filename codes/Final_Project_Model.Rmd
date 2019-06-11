@@ -98,8 +98,13 @@ table = sort(table(unlist(sent_terms$negative)), decreasing = TRUE)[1:10] %>% as
 ```{r}
 ## Logistics Regression on Binary Stock Price and Binary Response
 
-m1 = glm(news_sp$logdiff ~ news_sp$abstract_polarity_nba + news_sp$snippet_polarity_nba)
-summary(m1)
+m_pa = glm(news_sp$binary ~ news_sp$abstract_polarity + news_sp$headline_polarity + news_sp$snippet_polarity + news_sp$paragraph_polarity, family = 'binomial')
+m_nba = glm(news_sp$binary ~ news_sp$abstract_polarity_nba + news_sp$headline_polarity_nba + news_sp$snippet_polarity_nba + news_sp$paragraph_polarity_nba, family = 'binomial')
+m_r = glm(news_sp$binary ~ news_sp$abstract_polarity_r1 + news_sp$headline_polarity_r1 + news_sp$snippet_polarity_r1 + news_sp$paragraph_polarity_r1, family = 'binomial')
+
+summary(m_pa)
+summary(m_nba)
+summary(m_r)
 
 ## Use xgboost to fit the trees 
 ## Using sentiment scores to predict direction of share price returns
@@ -108,7 +113,10 @@ test1 <- xgboost(data = as.matrix(news_sp[c(1:700), -c(1,2,3,4,5)]), label = new
 
 pred <- predict(test1, as.matrix(news_sp[c(701:785), -c(1,2,3,4,5)]))
 prediction = as.numeric(pred > 0.5)
+
 sum(prediction == news_sp[c(701:785), c(3)])
+sum(prediction == news_sp[c(701:785), c(3)])/length(news_sp$date[701:785])
+
 
 ```
 
