@@ -6,9 +6,9 @@
 
 This is a directory to create a Shiny app that shows plots of (1) historical sentiment (i.e. polarity) scores of New York Times articles on Apple Inc and (2) the number of articles issued (on a daily, weekly or monthly basis) from January 1, 2014 to April 30, 2019. It uses three different existing sentiment analysis packages to plot the historical sentiment scores of the articles. The application allows the user to choose: 
 
-**1. Sentiment Analyzer:** PatternAnalyzer, Naive Bayes Analyzer, Sentimentr
-**2. Type of text data:** Abstract, Headline, Snippet, Paragraph
-**3. Frequency of data:** Daily, Weekly, Monthly (for weekly or monthly frequency, the sentiment score is the average of daily scores in the corresponding period)
+**1. Sentiment Analyzer:** PatternAnalyzer, Naive Bayes Analyzer, Sentimentr  
+**2. Type of text data:** Abstract, Headline, Snippet, Paragraph  
+**3. Frequency of data:** Daily, Weekly, Monthly (for weekly or monthly frequency, the sentiment score is the average of daily scores in the corresponding period)  
 
 ## **Description of Packages/Analyzer**
 

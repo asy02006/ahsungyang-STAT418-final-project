@@ -39,7 +39,7 @@ server is up - nice job!
 If it is successfully run, you will get the following output: 
 
 {  
-"predict response": "neg"
+"predict response": "neg"  
 }  
 
 **4. Both of the curl commands can be found in the file `curl_test.sh`.** 
