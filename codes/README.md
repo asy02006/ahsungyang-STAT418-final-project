@@ -2,7 +2,8 @@
 
 The directory contains files for codes used for running the analysis. 
 
-## 1. Article Data Download *(Please use the personal API-Key to run the script)*
+## 1. Article Data Download 
+- *Please use the personal API-Key to run the script*
 - It's a Jupyter Notebook used for downloading New York Times articles on Apple Inc. issued from January 1, 2014 to April 30, 2019 from the New York Times Article Search API
 - The articles are filtered by using the query ("Apple") as well as the organization field ("Apple Inc")
 - **parse_articles(articles):** A function to extract necessary information from the downloaded article and combine each article as a list
